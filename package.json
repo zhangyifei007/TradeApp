@@ -1,0 +1,50 @@
+{
+  "name": "SunmiTradeApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@rematch/core": "^1.0.6",
+    "@rematch/loading": "^1.1.2",
+    "@rematch/persist": "^1.1.5",
+    "react": "16.8.3",
+    "react-native": "0.59.9",
+    "react-native-ui-lib": "^3.5.0",
+    "react-native-vector-icons": "^6.1.0",
+    "react-navigation": "^3.0.4",
+    "react-redux": "^5.1.1",
+    "redux-logger": "^3.0.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-decorators": "^7.1.6",
+    "@babel/runtime": "^7.4.5",
+    "@types/react": "^16.8.22",
+    "@types/react-native": "^0.57.64",
+    "@types/react-redux": "^7.1.1",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-config-react-app": "^3.0.5",
+    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "husky": "^1.2.0",
+    "jest": "^24.8.0",
+    "lint-staged": "^8.1.0",
+    "metro-react-native-babel-preset": "^0.54.1",
+    "prettier": "^1.15.2",
+    "pretty-quick": "^1.8.0",
+    "react-test-renderer": "16.8.3",
+    "typescript": "^3.5.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
