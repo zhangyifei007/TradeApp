@@ -1,11 +1,6 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 11:19:36
- * @Last Modified by: huangjun
- * @Last Modified time: 2018-11-28 11:58:49
- */
+import { createModel } from "@rematch/core";
 
-const utils = {
+export const utils = createModel({
   state: {
     toast: {
       text: null,
@@ -46,6 +41,4 @@ const utils = {
       });
     },
   },
-};
-
-export default utils;
+});

@@ -1,31 +1,34 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 14:21:31
- * @Last Modified by: huangjun
- * @Last Modified time: 2018-12-03 15:01:09
- */
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { StyleSheet, View, Button, ActivityIndicator } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { StyleSheet, View, StatusBar } from 'react-native';
+import { StackActions, NavigationActions, SafeAreaView, NavigationScreenProps } from 'react-navigation';
+import reduxify from '../lib/redux';
+import { Text, Button, Input } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const resetAction = StackActions.reset({
   index: 0,
   actions: [NavigationActions.navigate({ routeName: 'Main' })],
 });
 
-@connect(
-  state => {
-    return {
-      user: state.user,
-      fetching: state.loading.effects.user.asyncLogin,
-    };
-  },
-  dispatch => ({
-    asyncLogin: mobile => dispatch.user.asyncLogin(mobile),
-  })
-)
-class Login extends Component {
+const mapState = (state: any) => {
+  return {
+    user: state.user,
+    fetching: state.loading.effects.user.asyncLogin,
+  };
+};
+const mapDispatch = (dispatch: any) => ({
+  asyncLogin: (mobile: any) => dispatch.user.asyncLogin(mobile),
+});
+
+type ConnectProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
+
+type PageOwnProps = {};
+type PageState = {};
+
+type IProps = ConnectProps & PageOwnProps & NavigationScreenProps;
+
+@reduxify(mapState, mapDispatch)
+class Login extends Component<IProps> {
   static navigationOptions = {
     title: 'Login',
   };
@@ -42,21 +45,63 @@ class Login extends Component {
   };
 
   render() {
-    const { fetching } = this.props;
     return (
-      <View style={styles.container}>
-        {fetching ? <ActivityIndicator /> : <Button title="Login" onPress={this.onLogin} />}
-        {!fetching && <Button title="Close" onPress={this.onClose} />}
+      <View style={styles.full}>
+        <StatusBar barStyle="light-content" />
+        <SafeAreaView style={styles.full}>
+          <View style={styles.container}>
+            <Text h4>密码登录</Text>
+            <Input
+              inputStyle={styles.input}
+              containerStyle={styles.inputContainer}
+              placeholder="请输入用户名"
+              leftIcon={<Icon name="user" size={24} color="black" />}
+              // onChangeText={name => userStore.changeLoginParams({name})}
+            />
+            <Input
+              inputStyle={styles.input}
+              containerStyle={styles.inputContainer}
+              placeholder="请输入密码"
+              secureTextEntry={true}
+              leftIcon={<Icon name="key" size={24} color="black" />}
+              // onChangeText={password => userStore.changeLoginParams({password})}
+            />
+            <Button
+              containerStyle={{ alignItems: 'flex-start' }}
+              title="验证码登录"
+              type="clear"
+            />
+            <Button title="登录" containerStyle={styles.loginButton} />
+          </View>
+          <View />
+        </SafeAreaView>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  full: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 64,
+    paddingLeft: 32,
+    paddingRight: 32,
+  },
+  input: {
+    marginLeft: 12,
+  },
+  inputContainer: {
+    marginTop: 32,
+  },
+  loginButton: {
+    marginTop: 32,
+  },
+  captchaButton: {
+    fontSize: 14,
+    marginTop: 10,
   },
 });
 export default Login;

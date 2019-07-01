@@ -1,13 +1,8 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 14:21:24
- * @Last Modified by:   huangjun
- * @Last Modified time: 2018-11-28 14:21:24
- */
 import React, { Component } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 
-class Detail extends Component {
+class Detail extends Component<NavigationScreenProps> {
   static navigationOptions = {
     title: 'Detail',
   };

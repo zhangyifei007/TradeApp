@@ -1,14 +1,9 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 14:17:50
- * @Last Modified by:   huangjun
- * @Last Modified time: 2018-11-28 14:17:50
- */
 import React, { Component } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { NavigationScreenProps } from 'react-navigation';
 
-class Account extends Component {
+class Account extends Component<NavigationScreenProps> {
   static navigationOptions = {
     title: 'Account',
     tabBarLabel: 'Account',

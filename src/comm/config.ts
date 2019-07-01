@@ -1,10 +1,3 @@
-/*
- * @Author: huangjun
- * @Date: 2018-05-25 14:50:28
- * @Last Modified by: huangjun
- * @Last Modified time: 2018-11-28 14:24:29
- */
-
 const config = {
   development: {
     API_HOST: 'http://staging.api.itsmycar.cn/v1/',

@@ -1,14 +1,9 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 14:21:27
- * @Last Modified by:   huangjun
- * @Last Modified time: 2018-11-28 14:21:27
- */
 import React, { Component } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { NavigationScreenProps } from 'react-navigation';
 
-class Home extends Component {
+class Home extends Component<NavigationScreenProps> {
   static navigationOptions = {
     title: 'Home',
     tabBarLabel: 'Home',

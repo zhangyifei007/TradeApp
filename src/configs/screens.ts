@@ -8,6 +8,7 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Account from '../pages/Account';
 import Detail from '../pages/Detail';
+import Auth from '../pages/Auth';
 
 const HomeNavigator = createBottomTabNavigator(
   {
@@ -48,6 +49,7 @@ const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
     Login: { screen: Login },
+    Auth: {screen: Auth}
   },
   {
     headerMode: 'none',
@@ -55,10 +57,11 @@ const AppNavigator = createStackNavigator(
     navigationOptions: {
       gesturesEnabled: false,
     },
+    initialRouteName: "Auth"
   }
 );
 
-export function getCurrentScreen(navigationState) {
+export function getCurrentScreen(navigationState: any): any {
   if (!navigationState) {
     return null;
   }
@@ -69,7 +72,7 @@ export function getCurrentScreen(navigationState) {
   return route.routeName;
 }
 
-export function routerReducer(state, action = {}) {
+export function routerReducer(state: any, action: any = {}) {
   return AppNavigator.router.getStateForAction(action, state);
 }
 

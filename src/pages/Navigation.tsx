@@ -1,9 +1,3 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 11:37:21
- * @Last Modified by: huangjun
- * @Last Modified time: 2018-12-03 15:04:42
- */
 import React, { Component } from 'react';
 import { StyleSheet, View, Dimensions, BackHandler, ToastAndroid } from 'react-native';
 import { NavigationActions } from 'react-navigation';

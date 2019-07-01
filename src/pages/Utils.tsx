@@ -1,9 +1,3 @@
-/*
- * @Author: huangjun
- * @Date: 2018-11-28 14:21:36
- * @Last Modified by:   huangjun
- * @Last Modified time: 2018-11-28 14:21:36
- */
 import React, { Component } from 'react';
 import { View, StyleSheet, Linking, Dimensions, TouchableOpacity } from 'react-native';
 import { Button, Text, Modal } from 'react-native-ui-lib';
@@ -11,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Toast from '../components/Toast';
 
 class Utils extends Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       showUpdateModal: false,

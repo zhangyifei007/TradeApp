@@ -1,20 +1,12 @@
-/*
- * 全局样式相关的常量与判断
- * @Author: huangjun
- * @Date: 2018-05-25 14:52:19
- * @Last Modified by: huangjun
- * @Last Modified time: 2018-11-28 14:24:22
- */
-
 import {
   Dimensions,
   Platform,
   PixelRatio,
   StyleSheet,
-  DeviceInfo,
   NativeModules,
   StatusBar,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 const X_WIDTH = 375;
 const X_HEIGHT = 812;
@@ -28,7 +20,7 @@ const isIPhoneX = (() => {
   if (Platform.OS === 'web') return false;
 
   if (minor >= 50) {
-    return DeviceInfo.isIPhoneX_deprecated;
+    return DeviceInfo.getModel() === 'iPhone X';
   }
 
   return (
