@@ -27,7 +27,7 @@ function checkStatus(response: any) {
   throw error;
 }
 
-export default function request(url: string, options: RequestInit) {
+export const request = (url: string, options: RequestInit) => {
   const defaultOptions = {
     timeout: 20 * 1000,
   };
@@ -68,7 +68,7 @@ export default function request(url: string, options: RequestInit) {
   });
 
   return timeoutPromise(fetchPromise, newOptions.timeout);
-}
+};
 
 const timeoutPromise = (fetchPromise: any, timeout: any) => {
   let abortFn: any = null;
@@ -85,4 +85,12 @@ const timeoutPromise = (fetchPromise: any, timeout: any) => {
   }, timeout);
 
   return racePromise;
+};
+
+export const Get = (url: string) => {
+  return request(url, { method: 'GET' });
+};
+
+export const Post = (url: string, options: any) => {
+  return request(url, { ...options, body: JSON.stringify(options.body), method: 'POST' });
 };

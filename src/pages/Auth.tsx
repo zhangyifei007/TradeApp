@@ -9,7 +9,7 @@ export default class Auth extends React.Component<NavigationScreenProps> {
     this._bootstrapAsync();
   }
   _bootstrapAsync = async () => {
-    const userToken = await load('userToken');
+    const userToken = await load('token');
     this.props.navigation.navigate(userToken ? 'Main' : 'Login');
   };
 

@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar } from 'react-native';
-import { StackActions, NavigationActions, SafeAreaView, NavigationScreenProps } from 'react-navigation';
+import {
+  StackActions,
+  NavigationActions,
+  SafeAreaView,
+  NavigationScreenProps,
+} from 'react-navigation';
 import reduxify from '../lib/redux';
 import { Text, Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +22,7 @@ const mapState = (state: any) => {
   };
 };
 const mapDispatch = (dispatch: any) => ({
-  asyncLogin: (mobile: any) => dispatch.user.asyncLogin(mobile),
+  asyncLogin: (name: string, password: string) => dispatch.user.asyncLogin(name, password),
 });
 
 type ConnectProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
@@ -34,14 +39,11 @@ class Login extends Component<IProps> {
   };
 
   onLogin = async () => {
-    const { fetching, asyncLogin } = this.props;
-    await asyncLogin('13265515115');
-    console.log(fetching);
-    this.props.navigation.dispatch(resetAction);
-  };
-
-  onClose = () => {
-    this.props.navigation.goBack();
+    const { asyncLogin } = this.props
+    const code = await asyncLogin('zhangyifei', 'ssdsf');
+    if (code === 1) {
+      this.props.navigation.navigate('Main');
+    }
   };
 
   render() {
@@ -66,12 +68,8 @@ class Login extends Component<IProps> {
               leftIcon={<Icon name="key" size={24} color="black" />}
               // onChangeText={password => userStore.changeLoginParams({password})}
             />
-            <Button
-              containerStyle={{ alignItems: 'flex-start' }}
-              title="验证码登录"
-              type="clear"
-            />
-            <Button title="登录" containerStyle={styles.loginButton} />
+            <Button containerStyle={{ alignItems: 'flex-start' }} title="验证码登录" type="clear" />
+            <Button title="登录" containerStyle={styles.loginButton} onPress={this.onLogin} />
           </View>
           <View />
         </SafeAreaView>

@@ -1,6 +1,7 @@
 import { createModel } from '@rematch/core';
+import { login } from '../api/user';
+import { save } from '../lib/storage';
 
-const asyncDelay = (ms: number) => new Promise(r => setTimeout(r, ms));
 export const user = createModel({
   state: {
     token: null,
@@ -38,12 +39,11 @@ export const user = createModel({
     },
   },
   effects: {
-    async asyncLogin(mobile, state) {
-      await asyncDelay(3000);
-      this.login({
-        mobile: mobile,
-        token: 'asdasd1231231as1d561as1d65a',
-      });
+    async asyncLogin({name, password}: any, state) {
+      const res = await login(name, password)
+      console.log(res)
+      save('token', '123123')
+      return 1
     },
   },
 });
