@@ -58,7 +58,7 @@ class Login extends Component<IProps> {
 
   onLoginCaptcha = () => {
     const { navigation } = this.props;
-    navigation.navigate('LoginCaptcha');
+    navigation.replace('LoginCaptcha');
   };
 
   onLogin = async () => {

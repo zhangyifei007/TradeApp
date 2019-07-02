@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import Spinner, { SpinnerProps } from 'react-native-loading-spinner-overlay';
 
-const Loading = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <ActivityIndicator size="large" />
-  </View>
+interface Props extends SpinnerProps {}
+
+const Loading = (props: Props) => (
+  <Spinner {...props} textContent={'请求中...'} textStyle={{ color: '#FFF' }} />
 );
 
 export default Loading;

@@ -95,7 +95,7 @@ export default {
   isIPhoneX,
   statusBarHeight,
 
-  baseColor: '#E6C3A1', // 主色
+  primary: '#ff6900', // 主色
   minorColor: '#CB8F5C', // 副色
   grayColor: '#CCCCCC',
   darkGreyColor: '#AAAAAA',

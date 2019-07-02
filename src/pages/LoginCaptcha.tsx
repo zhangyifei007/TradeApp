@@ -49,6 +49,11 @@ class Login extends Component<IProps> {
     password: '',
   };
 
+  onBackLogin = () => {
+    const { navigation } = this.props;
+    navigation.replace('Login')
+  }
+
   onLogin = async () => {
     const { asyncLogin, navigation } = this.props;
     const { mobile, password } = this.state;
@@ -76,7 +81,7 @@ class Login extends Component<IProps> {
         <StatusBar barStyle="light-content" />
         <SafeAreaView style={styles.full}>
           <View style={styles.container}>
-            <Text h4>密码登录</Text>
+            <Text h4>验证码登录</Text>
             <Input
               inputStyle={styles.input}
               containerStyle={styles.inputContainer}
@@ -94,6 +99,7 @@ class Login extends Component<IProps> {
               containerStyle={{ alignItems: 'flex-start' }}
               title="用户名密码登录"
               type="clear"
+              onPress={this.onBackLogin}
             />
             <Button
               title="登录"
