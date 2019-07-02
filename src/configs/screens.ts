@@ -9,6 +9,7 @@ import Home from '../pages/Home';
 import Account from '../pages/Account';
 import Detail from '../pages/Detail';
 import Auth from '../pages/Auth';
+import LoginCaptcha from '../pages/LoginCaptcha';
 
 const HomeNavigator = createBottomTabNavigator(
   {
@@ -49,7 +50,8 @@ const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
     Login: { screen: Login },
-    Auth: {screen: Auth}
+    LoginCaptcha: { screen: LoginCaptcha },
+    Auth: { screen: Auth },
   },
   {
     headerMode: 'none',
@@ -57,7 +59,7 @@ const AppNavigator = createStackNavigator(
     navigationOptions: {
       gesturesEnabled: false,
     },
-    initialRouteName: "Auth"
+    initialRouteName: 'Auth',
   }
 );
 

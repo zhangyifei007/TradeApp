@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Alert } from 'react-native';
-import {
-  StackActions,
-  NavigationActions,
-  SafeAreaView,
-  NavigationScreenProps,
-} from 'react-navigation';
+import { SafeAreaView, NavigationScreenProps } from 'react-navigation';
 import reduxify from '../lib/redux';
 import { Text, Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as yup from 'yup';
 import Toast from 'react-native-root-toast';
+import { Timer } from '../components/Timer';
+import VerifyCode from '../components/CaptchInput';
 import { px2dp } from '../comm';
 
 const schema = yup.object().shape({
@@ -19,10 +16,6 @@ const schema = yup.object().shape({
     .required('手机号不能为空')
     .matches(/^1[0-9]{10}$/, '请输入正确的手机号'),
   password: yup.string().required('密码不能为空'),
-});
-const resetAction = StackActions.reset({
-  index: 0,
-  actions: [NavigationActions.navigate({ routeName: 'Main' })],
 });
 
 const mapState = (state: any) => {
@@ -54,11 +47,6 @@ class Login extends Component<IProps> {
   state: Readonly<PageState> = {
     mobile: '',
     password: '',
-  };
-
-  onLoginCaptcha = () => {
-    const { navigation } = this.props;
-    navigation.navigate('LoginCaptcha');
   };
 
   onLogin = async () => {
@@ -94,21 +82,18 @@ class Login extends Component<IProps> {
               containerStyle={styles.inputContainer}
               placeholder="请输入手机号"
               leftIcon={<Icon name="user" size={24} color="black" />}
+              rightIcon={
+                <Timer
+                  timeCount={console.log}
+                />
+              }
               onChangeText={mobile => this.setState({ mobile })}
             />
-            <Input
-              inputStyle={styles.input}
-              containerStyle={styles.inputContainer}
-              placeholder="请输入密码"
-              secureTextEntry={true}
-              leftIcon={<Icon name="key" size={24} color="black" />}
-              onChangeText={password => this.setState({ password })}
-            />
+            <VerifyCode onChangeText={console.log} verifyCodeLength={4} />
             <Button
               containerStyle={{ alignItems: 'flex-start' }}
-              title="验证码登录"
+              title="用户名密码登录"
               type="clear"
-              onPress={this.onLoginCaptcha}
             />
             <Button
               title="登录"

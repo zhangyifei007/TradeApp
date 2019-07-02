@@ -43,3 +43,4 @@ declare module '*.svg' {
 declare module 'react-native-vector-icons/*';
 declare module 'react-native-ui-lib';
 declare module 'redux-persist/*';
+declare module 'remote-redux-devtools';

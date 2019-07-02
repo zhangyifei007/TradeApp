@@ -1,3 +1,6 @@
+import { config } from '../comm';
+import axios from 'axios';
+
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -15,82 +18,39 @@ const codeMessage: any = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
-function checkStatus(response: any) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const errorText = codeMessage[response.status] || response.statusText;
 
-  const error = new Error(errorText);
-  error.name = response.status;
-  error.message = `${response}`;
-  throw error;
+const customerMerssage: any = {
+
 }
 
-export const request = (url: string, options: RequestInit) => {
-  const defaultOptions = {
-    timeout: 20 * 1000,
-  };
-  const newOptions = { ...defaultOptions, ...options };
-  if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
-    if (!(newOptions.body instanceof FormData)) {
-      newOptions.headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
-        ...newOptions.headers,
-      };
-      newOptions.body = JSON.stringify(newOptions.body);
-    } else {
-      // newOptions.body is FormData
-      newOptions.headers = {
-        Accept: 'application/json',
-        ...newOptions.headers,
-      };
+const instance = axios.create({
+  baseURL: config.API_HOST,
+  timeout: 3000,
+  headers: {
+    Accept: 'application/json',
+  },
+});
+
+instance.interceptors.response.use(
+  response => {
+    if (response.status >= 200 && response.status <= 300) {
+      return Promise.resolve(response);
     }
+    if (codeMessage[response.status]) {
+      Promise.reject(codeMessage[response.status])
+    }
+    const code = customerMerssage[response.data.code]
+    return Promise.reject(code);
+  },
+  error => {
+    return Promise.reject(error);
   }
-
-  console.log(url, newOptions);
-  const fetchPromise = new Promise((resolve, reject) => {
-    fetch(url, newOptions)
-      .then(checkStatus)
-      .then(response => {
-        if (newOptions.method === 'DELETE' || response.status === 204) {
-          return response.text();
-        }
-        return response.json();
-      })
-      .then(res => {
-        resolve(res);
-      })
-      .catch(e => {
-        reject(e);
-      });
-  });
-
-  return timeoutPromise(fetchPromise, newOptions.timeout);
-};
-
-const timeoutPromise = (fetchPromise: any, timeout: any) => {
-  let abortFn: any = null;
-  const abortPromise = new Promise((resolve, reject) => {
-    abortFn = () => {
-      reject(new Error({ status: 504 } as any));
-    };
-  });
-
-  const racePromise = Promise.race([fetchPromise, abortPromise]);
-
-  setTimeout(() => {
-    abortFn();
-  }, timeout);
-
-  return racePromise;
-};
+);
 
 export const Get = (url: string) => {
-  return request(url, { method: 'GET' });
+  return instance.get(url);
 };
 
-export const Post = (url: string, options: any) => {
-  return request(url, { ...options, body: JSON.stringify(options.body), method: 'POST' });
+export const Post = (url: string, data: object = {}) => {
+  return instance.post(url, data);
 };

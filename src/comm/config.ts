@@ -1,19 +1,20 @@
-const config = {
+interface Config {
+  API_HOST: string;
+  HOST_TITLE: string;
+  QINIU_KEY: string;
+  BAIDU_MAP_AK: string;
+  AMAP_KEY: string;
+  PUSHY_APP_KEY: {
+    ios: string;
+    android: string;
+  };
+  WECHAT_APP_ID: string;
+}
+
+const config: any = {
   development: {
-    API_HOST: 'http://staging.api.itsmycar.cn/v1/',
+    API_HOST: 'http://localhost/api',
     HOST_TITLE: '(开发环境)',
-    QINIU_KEY: '',
-    BAIDU_MAP_AK: '',
-    AMAP_KEY: '',
-    PUSHY_APP_KEY: {
-      ios: '',
-      android: '',
-    },
-    WECHAT_APP_ID: '',
-  },
-  staging: {
-    API_HOST: 'http://staging.api.itsmycar.cn/v1/',
-    HOST_TITLE: '(测试环境)',
     QINIU_KEY: '',
     BAIDU_MAP_AK: '',
     AMAP_KEY: '',
@@ -35,19 +36,9 @@ const config = {
     },
     WECHAT_APP_ID: '',
   },
-  common: {
-    VERSION_NAME: {
-      ios: '1.0.0',
-      android: '1.0.0',
-    },
-    QINIU_IMAGE_URL: 'http://images.itsmycar.cn/',
-    IMAGE_SMALL: '?imageView2/2/w/700/interlace/1/q/75',
-    IMAGE_THUMBNAIL: '?imageView2/2/w/256/interlace/1/q/75',
-    IMAGE_ICON: '?imageView2/2/w/100/interlace/1/q/75',
-  },
 };
 
-export default {
-  ...config.production,
-  ...config.common,
-};
+const env = __DEV__ ? 'development' : 'production';
+const exportConfig: Config = config[env];
+
+export { exportConfig };

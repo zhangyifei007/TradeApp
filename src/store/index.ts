@@ -4,7 +4,7 @@ import createLoadingPlugin from '@rematch/loading';
 import createRematchPersist from '@rematch/persist';
 import { createLogger } from 'redux-logger';
 import utilsMiddleware from './utilsMiddleware';
-import * as models from '../models'
+import * as models from '../models';
 
 const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
 const logger = createLogger({

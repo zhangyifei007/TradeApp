@@ -39,8 +39,8 @@ export const user = createModel({
     },
   },
   effects: {
-    async asyncLogin({name, password}: any, state) {
-      const res = await login(name, password)
+    async asyncLogin(params: any, state) {
+      const res = await login(params)
       console.log(res)
       save('token', '123123')
       return 1

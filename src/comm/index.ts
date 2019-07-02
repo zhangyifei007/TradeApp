@@ -7,5 +7,6 @@
 
 import Theme from './Theme';
 import px2dp from './px2dp';
+import { exportConfig } from './config';
 
-export { Theme, px2dp };
+export { Theme, px2dp, exportConfig as config };

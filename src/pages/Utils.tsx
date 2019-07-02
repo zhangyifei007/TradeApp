@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Linking, Dimensions, TouchableOpacity } from 'react-native';
 import { Button, Text, Modal } from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Toast from '../components/Toast';
+import Toast from 'react-native-root-toast';
 
 class Utils extends Component {
   constructor(props: any) {
