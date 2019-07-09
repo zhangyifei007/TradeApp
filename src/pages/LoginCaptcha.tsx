@@ -7,15 +7,31 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import * as yup from 'yup';
 import Toast from 'react-native-root-toast';
 import { Timer } from '../components/Timer';
-import VerifyCode from '../components/CaptchInput';
+// import VerifyCode from '../components/CaptchInput';
 import { px2dp } from '../comm';
+import { Formik, FormikProps } from 'formik';
+import { FiledInput } from '../components/form/Input';
+
+enum LoginCaptchaField {
+  Mobile = 'mobile',
+  Captcha = 'captcha',
+}
+
+const initLoginValues = {
+  [LoginCaptchaField.Mobile]: '',
+  [LoginCaptchaField.Captcha]: '',
+};
 
 const schema = yup.object().shape({
-  mobile: yup
+  [LoginCaptchaField.Mobile]: yup
     .string()
     .required('手机号不能为空')
     .matches(/^1[0-9]{10}$/, '请输入正确的手机号'),
-  password: yup.string().required('密码不能为空'),
+  [LoginCaptchaField.Captcha]: yup
+    .string()
+    .max(4, '验证码最大长度不能超过四位')
+    .matches(/^[0-9]{4}$/)
+    .required('验证码不能为空'),
 });
 
 const mapState = (state: any) => {
@@ -31,81 +47,76 @@ const mapDispatch = (dispatch: any) => ({
 type ConnectProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 
 type PageOwnProps = {};
-type PageState = {
-  mobile: string;
-  password: string;
-};
 
-type IProps = ConnectProps & PageOwnProps & PageState & NavigationScreenProps;
-
+type IProps = ConnectProps & PageOwnProps & NavigationScreenProps;
 @reduxify(mapState, mapDispatch)
 class Login extends Component<IProps> {
   static navigationOptions = {
     title: 'Login',
   };
 
-  state: Readonly<PageState> = {
-    mobile: '',
-    password: '',
-  };
-
   onBackLogin = () => {
     const { navigation } = this.props;
-    navigation.replace('Login')
-  }
+    navigation.replace('Login');
+  };
 
-  onLogin = async () => {
+  onLogin = async (values: any) => {
     const { asyncLogin, navigation } = this.props;
-    const { mobile, password } = this.state;
+    const code = await asyncLogin(values);
 
-    schema
-      .validate({ mobile, password })
-      .then(async () => {
-        const code = await asyncLogin({ mobile, password });
-        if (code === 1) {
-          navigation.navigate('Main');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        Toast.show(error.message, {
-          position: Toast.positions.CENTER,
-        });
+    if (code === 1) {
+      navigation.navigate('Main');
+    } else {
+      Toast.show('', {
+        position: Toast.positions.CENTER,
       });
+    }
   };
 
   render() {
-    const { mobile, password } = this.state;
     return (
       <View style={styles.full}>
         <StatusBar barStyle="light-content" />
         <SafeAreaView style={styles.full}>
           <View style={styles.container}>
             <Text h4>验证码登录</Text>
-            <Input
-              inputStyle={styles.input}
-              containerStyle={styles.inputContainer}
-              placeholder="请输入手机号"
-              leftIcon={<Icon name="user" size={24} color="black" />}
-              rightIcon={
-                <Timer
-                  timeCount={console.log}
-                />
-              }
-              onChangeText={mobile => this.setState({ mobile })}
-            />
-            <VerifyCode onChangeText={console.log} verifyCodeLength={4} />
-            <Button
-              containerStyle={{ alignItems: 'flex-start' }}
-              title="用户名密码登录"
-              type="clear"
-              onPress={this.onBackLogin}
-            />
-            <Button
-              title="登录"
-              disabled={!mobile && !password}
-              containerStyle={styles.loginButton}
-              onPress={this.onLogin}
+            <Formik
+              initialValues={initLoginValues}
+              onSubmit={this.onLogin}
+              validationSchema={schema}
+              render={(props: FormikProps<any>) => {
+                return (
+                  <>
+                    <FiledInput
+                      name={LoginCaptchaField.Mobile}
+                      inputStyle={styles.input}
+                      containerStyle={styles.inputContainer}
+                      placeholder="请输入手机号"
+                      leftIcon={<Icon name="user" size={24} color="black" />}
+                      rightIcon={<Timer timeCount={console.log} />}
+                    />
+                    <FiledInput
+                      name={LoginCaptchaField.Captcha}
+                      inputStyle={styles.input}
+                      containerStyle={styles.inputContainer}
+                      placeholder="请输入验证码"
+                      leftIcon={<Icon name="user" size={24} color="black" />}
+                    />
+                    {/* <VerifyCode onChangeText={console.log} verifyCodeLength={4} /> */}
+                    <Button
+                      containerStyle={{ alignItems: 'flex-start' }}
+                      title="用户名密码登录"
+                      type="clear"
+                      onPress={this.onBackLogin}
+                    />
+                    <Button
+                      title="登录"
+                      containerStyle={styles.loginButton}
+                      onPress={props.handleSubmit as any}
+                    />
+                  </>
+                );
+              }}
             />
           </View>
           <View />

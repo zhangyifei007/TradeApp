@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Alert } from 'react-native';
+import { StyleSheet, View, StatusBar, Alert, Linking } from 'react-native';
 import {
   StackActions,
   NavigationActions,
   SafeAreaView,
   NavigationScreenProps,
 } from 'react-navigation';
+import { Formik, FormikProps } from 'formik';
 import reduxify from '../lib/redux';
 import { Text, Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as yup from 'yup';
 import Toast from 'react-native-root-toast';
 import { px2dp } from '../comm';
-
+// import * as Wechat from 'react-native-wechat';
+import { DissKeyBoard } from '../components/DissKeyBoard';
+import { FiledInput } from '../components/form/Input';
+// Wechat.registerApp('wx92b8b689ee790670')
 const schema = yup.object().shape({
   mobile: yup
     .string()
@@ -38,22 +42,22 @@ const mapDispatch = (dispatch: any) => ({
 type ConnectProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 
 type PageOwnProps = {};
-type PageState = {
-  mobile: string;
-  password: string;
-};
 
-type IProps = ConnectProps & PageOwnProps & PageState & NavigationScreenProps;
+type IProps = ConnectProps & PageOwnProps & NavigationScreenProps;
 
+enum LoginField {
+  Mobile = 'mobile',
+  Password = 'password'
+}
+
+const initLoginValues = {
+  [LoginField.Mobile]: '',
+  [LoginField.Password]: '',
+}
 @reduxify(mapState, mapDispatch)
 class Login extends Component<IProps> {
   static navigationOptions = {
     title: 'Login',
-  };
-
-  state: Readonly<PageState> = {
-    mobile: '',
-    password: '',
   };
 
   onLoginCaptcha = () => {
@@ -61,65 +65,82 @@ class Login extends Component<IProps> {
     navigation.replace('LoginCaptcha');
   };
 
-  onLogin = async () => {
+  onLogin = async (values: any) => {
     const { asyncLogin, navigation } = this.props;
-    const { mobile, password } = this.state;
-
-    schema
-      .validate({ mobile, password })
-      .then(async () => {
-        const code = await asyncLogin({ mobile, password });
-        if (code === 1) {
-          navigation.navigate('Main');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        Toast.show(error.message, {
-          position: Toast.positions.CENTER,
-        });
+    const code = await asyncLogin(values);
+    if (code === 1) {
+      navigation.navigate('Main');
+    } else {
+      Toast.show('2323', {
+        position: Toast.positions.CENTER,
       });
+    }
+  };
+
+  componentDidMount = () => {
+    // Linking.canOpenURL('weixin://').then(supported => {
+    //   if (supported) {
+    //   } else {
+    //     Alert.alert('温馨提示', '请先安装微信');
+    //   }
+    // Wechat.launchMini({
+    //   userName: 'wx92b8b689ee790670', // 拉起的小程序的username
+    //   miniProgramType: 0, // 拉起小程序的类型. 0-正式版 1-开发版 2-体验版
+    //   path: 'pages/index/index' // 拉起小程序页面的可带参路径，不填默认拉起小程序首页
+    // });
+    // });
   };
 
   render() {
-    const { mobile, password } = this.state;
     return (
-      <View style={styles.full}>
-        <StatusBar barStyle="light-content" />
-        <SafeAreaView style={styles.full}>
-          <View style={styles.container}>
-            <Text h4>密码登录</Text>
-            <Input
-              inputStyle={styles.input}
-              containerStyle={styles.inputContainer}
-              placeholder="请输入手机号"
-              leftIcon={<Icon name="user" size={24} color="black" />}
-              onChangeText={mobile => this.setState({ mobile })}
-            />
-            <Input
-              inputStyle={styles.input}
-              containerStyle={styles.inputContainer}
-              placeholder="请输入密码"
-              secureTextEntry={true}
-              leftIcon={<Icon name="key" size={24} color="black" />}
-              onChangeText={password => this.setState({ password })}
-            />
-            <Button
-              containerStyle={{ alignItems: 'flex-start' }}
-              title="验证码登录"
-              type="clear"
-              onPress={this.onLoginCaptcha}
-            />
-            <Button
-              title="登录"
-              disabled={!mobile && !password}
-              containerStyle={styles.loginButton}
-              onPress={this.onLogin}
-            />
-          </View>
-          <View />
-        </SafeAreaView>
-      </View>
+      <DissKeyBoard>
+        <View style={styles.full}>
+          <StatusBar barStyle="light-content" />
+          <SafeAreaView style={styles.full}>
+            <View style={styles.container}>
+              <Text h4>密码登录1</Text>
+              <Formik
+                initialValues={initLoginValues}
+                onSubmit={this.onLogin}
+                validationSchema={schema}
+                render={(props: FormikProps<any>) => {
+                  return (
+                    <>
+                      <FiledInput
+                        name={LoginField.Mobile}
+                        inputStyle={styles.input}
+                        containerStyle={styles.inputContainer}
+                        placeholder="请输入手机号"
+                        leftIcon={<Icon name="user" size={24} color="black" />}
+                      />
+                      <FiledInput
+                        name={LoginField.Password}
+                        inputStyle={styles.input}
+                        containerStyle={styles.inputContainer}
+                        placeholder="请输入密码"
+                        secureTextEntry={true}
+                        leftIcon={<Icon name="key" size={24} color="black" />}
+                      />
+                      <Button
+                        containerStyle={{ alignItems: 'flex-start' }}
+                        title="验证码登录"
+                        type="clear"
+                        onPress={this.onLoginCaptcha}
+                      />
+                      <Button
+                        title="登录"
+                        containerStyle={styles.loginButton}
+                        onPress={props.handleSubmit as any}
+                      />
+                    </>
+                  );
+                }}
+              />
+            </View>
+            <View />
+          </SafeAreaView>
+        </View>
+      </DissKeyBoard>
     );
   }
 }

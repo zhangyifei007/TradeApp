@@ -77,6 +77,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -106,7 +107,17 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
+    }
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
     }
     splits {
         abi {
@@ -117,9 +128,14 @@ android {
         }
     }
     buildTypes {
+        releaseStaging {
+            buildConfigField "String", "CODEPUSH_KEY", 'BocmSWg6iiOS-YTLS0MCddUMmhm58898cb10-e7b4-49c7-b547-6ca075039f4a'
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", 'FLJmO-lcWRKQGlG_8uW5RmB05isR8898cb10-e7b4-49c7-b547-6ca075039f4a'
         }
     }
     // applicationVariants are e.g. debug, release
@@ -138,7 +154,8 @@ android {
 }
 
 dependencies {
-    implementation project(':@react-native-community_async-storage')
+    implementation project(':react-native-wechat')
+    implementation project(':react-native-code-push')
     implementation project(':react-native-device-info')
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-vector-icons')

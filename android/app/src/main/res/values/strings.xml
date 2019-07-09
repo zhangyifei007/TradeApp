@@ -1,3 +1,4 @@
 <resources>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">BocmSWg6iiOS-YTLS0MCddUMmhm58898cb10-e7b4-49c7-b547-6ca075039f4a</string>
     <string name="app_name">SunmiTradeApp</string>
 </resources>

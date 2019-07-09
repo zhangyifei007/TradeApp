@@ -9,3 +9,6 @@
 `react-native link react-native-gesture-handler`
 ###### react-native-screens （可以不安装）
 `react-native link react-native-screens`
+####
+<!-- code-push release-react rebooking-ios ios -d Production
+code-push release-react rebooking-android android -d Production -->

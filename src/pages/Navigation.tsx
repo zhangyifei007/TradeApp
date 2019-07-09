@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Dimensions, BackHandler, ToastAndroid } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import Utils from './Utils';
 import AppNavigator, { getCurrentScreen } from '../configs/screens';
 import reduxify from '../lib/redux';
 const { height, width } = Dimensions.get('window');
@@ -54,7 +53,6 @@ class Navigation extends Component<any> {
             this.navigation = v;
           }}
         />
-        <Utils />
       </View>
     );
   }
